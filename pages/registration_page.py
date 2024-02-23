@@ -10,6 +10,7 @@ class RegistrationPage(BasePage):
         shadow_host = self.browser.find_element(*RegistrationPageLocators.SHADOW_HOST)
         shadow_root = self.browser.execute_script('return arguments[0].shadowRoot', shadow_host)
         return shadow_root
+
     def test_invalid_username_formats(self):
         invalid_usernames = [
             '', #Пустое поле
@@ -27,7 +28,7 @@ class RegistrationPage(BasePage):
         for username in invalid_usernames:
             username_input.send_keys(username)
             self.click_element(submit_button)
-            error_message = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.ERROR_TEXT)
+            error_message = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.USERNAME_ERROR_TEXT)
             print(f'{error_message.text}')
             assert error_message, 'Сообщение об ошибке не найдено'
             username_input.send_keys([Keys.BACKSPACE] * 1000)
@@ -50,7 +51,36 @@ class RegistrationPage(BasePage):
         for email in invalid_emails:
             email_input.send_keys(email)
             self.click_element(submit_button)
-            error_message = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.ERROR_TEXT)
+            error_message = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.EMAIL_ERROR_TEXT)
             print(f'{error_message.text}')
             assert error_message, 'Сообщение об ошибке не найдено'
             email_input.send_keys([Keys.BACKSPACE] * 1000)
+
+    def test_invalid_password_format(self):
+        invalid_passwords = [
+            "",  # Пустой пароль
+            "short",  # Слишком короткий пароль
+            "a" * 65,  # Слишком длинный пароль
+            "no_digit_or_uppercase",  # Пароль без цифры и заглавной буквы
+            "NOLOWER123",  # Пароль без прописных букв, но с цифррами
+            "noupper123",  # Пароль без заглавной буквы, но с цифрами
+            "Password$",  # Пароль с символам заглавной, прописной, но без цифры
+            "@@@@$$$$123", # Пароль с символам, цифрами, но без букв
+            "@@@@$$$$123A",  # Пароль с символам, цифрами, и заглавной буквой
+            "@@@@$$$$123a",  # Пароль с символам, цифрами, и прописной буквой
+            "12345677890", # Пароль только с цифрами
+            "12345678Йй", # Пароль с цифрами, заглавной, прописной буквой кириллицей
+        ]
+
+        password_input = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.PASSWORD_INPUT)
+        submit_button = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.SUBMIT_BUTTON)
+        password_show_button = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.PASSWORD_SHOW_BUTTON)
+        self.click_element(password_show_button)
+
+        for password in invalid_passwords:
+            password_input.send_keys(password)
+            self.click_element(submit_button)
+            error_message = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.PASSWORD_ERROR_TEXT)
+            print(f'{error_message.text}')
+            assert error_message, 'Сообщение об ошибке не найдено'
+            password_input.send_keys([Keys.BACKSPACE] * 1000)
