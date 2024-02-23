@@ -10,4 +10,5 @@ class RegistrationPageLocators():
     USERNAME_INPUT = (By.CSS_SELECTOR, '.v-text-field__slot > input')
     ERROR_TEXT = (By.CSS_SELECTOR, 'span[class="k-text"]:first-child')
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'div[data-wi="submit-button"] > button')
+    PASSWORD_INPUT = (By.CSS_SELECTOR, '#username')
 
