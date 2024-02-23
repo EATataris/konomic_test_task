@@ -11,7 +11,4 @@ def test_run(browser):
     page.go_to_registration_page()
     time.sleep(3)
     registration_page = RegistrationPage(browser, browser.current_url)
-    registration_page.test_invalid_username_too_short()
-    time.sleep(3)
-    registration_page.test_invalid_username_too_long()
-    time.sleep(1)
+    registration_page.test_invalid_username_formats()
