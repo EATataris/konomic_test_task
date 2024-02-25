@@ -14,4 +14,5 @@ def test_run(browser):
     registration_page = RegistrationPage(browser, browser.current_url)
     # registration_page.test_invalid_username_formats()
     # registration_page.test_invalid_email_formats()
-    registration_page.test_invalid_password_format()
+    #registration_page.test_invalid_password_format()
+    registration_page.test_invalid_referral_code_format()

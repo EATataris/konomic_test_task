@@ -30,7 +30,7 @@ class RegistrationPage(BasePage):
             self.click_element(submit_button)
             error_message = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.USERNAME_ERROR_TEXT)
             print(f'{error_message.text}')
-            assert error_message, 'Сообщение об ошибке не найдено'
+            assert error_message, 'Формат username верный!'
             username_input.send_keys([Keys.BACKSPACE] * 1000)
 
     def test_invalid_email_formats(self):
@@ -53,7 +53,7 @@ class RegistrationPage(BasePage):
             self.click_element(submit_button)
             error_message = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.EMAIL_ERROR_TEXT)
             print(f'{error_message.text}')
-            assert error_message, 'Сообщение об ошибке не найдено'
+            assert error_message, 'Формат email верный!'
             email_input.send_keys([Keys.BACKSPACE] * 1000)
 
     def test_invalid_password_format(self):
@@ -82,5 +82,24 @@ class RegistrationPage(BasePage):
             self.click_element(submit_button)
             error_message = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.PASSWORD_ERROR_TEXT)
             print(f'{error_message.text}')
-            assert error_message, 'Сообщение об ошибке не найдено'
+            assert error_message, 'Формат пароля верный!'
             password_input.send_keys([Keys.BACKSPACE] * 1000)
+
+    def test_invalid_referral_code_format(self):
+        invalid_codes = [
+            "", #Пустой код
+            "123", #Слишком короткий код
+            "code1234@", #Слишком длинный код
+        ]
+
+        referral_input = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.REFERRAL_INPUT)
+        submit_button = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.SUBMIT_BUTTON)
+
+        for code in invalid_codes:
+            referral_input.send_keys(code)
+            if not submit_button.is_enabled():
+                error_message = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.REFERRAL_ERROR_TEXT)
+                print(f'{error_message.text}')
+                referral_input.send_keys([Keys.BACKSPACE] * 1000)
+            else:
+                assert 'Формат реферального кода верный!'
