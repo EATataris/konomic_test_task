@@ -20,6 +20,8 @@ class RegistrationPageLocators():
     PASSWORD_ERROR_TEXT = (By.CSS_SELECTOR, 'div[data-wi="password"] span')
     REFERRAL_ERROR_TEXT = (By.CSS_SELECTOR, 'div[data-wi="referral"] span')
 
+    USER_AGREEMENT_CHECKBOX = (By.CSS_SELECTOR, 'div[data-wi="user-agreement"] input')
+
     SUBMIT_BUTTON = (By.CSS_SELECTOR, 'div[data-wi="submit-button"] button')
 
 

@@ -103,3 +103,7 @@ class RegistrationPage(BasePage):
                 referral_input.send_keys([Keys.BACKSPACE] * 1000)
             else:
                 assert 'Формат реферального кода верный!'
+
+    def text_user_agreement_checkbox_not_checked(self):
+        user_agreement_checkbox = self.switch_to_shadow_dom().find_element(*RegistrationPageLocators.USER_AGREEMENT_CHECKBOX)
+        assert not user_agreement_checkbox.is_selected(), 'Галочка согласия с пользовательским соглашением уже отмечена'
